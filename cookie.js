@@ -10,13 +10,7 @@ function create_UUID() {
   return uuid;
 }
 
-function setCookie(cname, cvalue, exdays) {
-  const d = new Date();
-  d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
-  let expires = "expires=" + d.toUTCString();
-  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-}
-
+/* Function for retrieving Cookie */
 function getCookie(cname) {
   let name = cname + "=";
   let decodedCookie = decodeURIComponent(document.cookie);
@@ -33,11 +27,26 @@ function getCookie(cname) {
   return "";
 }
 
-function checkCookie() {
-  let user = getCookie("yext_cookie");
-  if (user == "") {
-    setCookie("yext_cookie", create_UUID(), 365);
+/* Function for creating a cookie if cookie does not already exist. */
+function yext_cookie() {
+  let cookie = getCookie("yext_cookie");
+  if (cookie == "") {
+    let cookie_name = "yext_cookie";
+    let cookie_id = create_UUID();
+    let cookie_expiration = 365;
+
+    const d = new Date();
+    d.setTime(d.getTime() + cookie_expiration * 24 * 60 * 60 * 1000);
+    let expires = ";expires=" + d.toUTCString();
+    document.cookie =
+      cookie_name +
+      "=" +
+      cookie_id +
+      ";" +
+      cookie_expiration +
+      ";path=/" +
+      expires;
   }
 }
 
-checkCookie();
+yext_cookie();
